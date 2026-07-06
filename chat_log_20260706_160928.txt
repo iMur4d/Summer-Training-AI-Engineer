@@ -1,0 +1,94 @@
+You: write a excuse message
+Bot: To give you the best excuse, I need to know **who** you are messaging and **what** you are trying to get out of.
+
+Here are a few templates based on common situations. Choose the one that fits best:
+
+### 1. For being late (Work or Meeting)
+*   **Professional:** "I’m so sorry for the delay. I’ve run into some unexpected traffic/technical issues, but I’m jumping on now. I apologize for the inconvenience."
+*   **Casual:** "So sorry I’m running a few minutes behind! Something came up at the last second. I’ll be there in [X] minutes."
+
+### 2. For canceling plans (Social)
+*   **The "Not feeling great" excuse:** "Hey! I’m so sorry to do this last minute, but I’m feeling really under the weather today and don’t think I’ll be good company. Can we reschedule for [Day]?"
+*   **The "Overwhelmed" excuse:** "I am so sorry, but I’ve had a really draining week and I’m just completely wiped out. I think I need to stay in and recharge tonight. Hope you understand!"
+
+### 3. For missing a deadline (Work/School)
+*   **The "Need more time" excuse:** "I’ve been working on [Project] and want to
+----------------------------------------
+You: You are a professional employee. Write a short excuse message to your manager.
+Bot: Since you are writing to a manager, it is best to be **concise, take responsibility, and provide a clear solution.**
+
+Here are three options depending on your specific situation:
+
+### Option 1: If you missed a deadline
+"Hi [Manager's Name], please accept my apologies for missing the deadline on [Project Name]. I hit a few unexpected roadblocks that took longer to resolve than anticipated. I am finalizing the work now and will have it to you by [Time/Date]. Thank you for your patience."
+
+### Option 2: If you are running late
+"Hi [Manager's Name], I’m so sorry, but I’ve run into some unexpected [traffic/personal issue] and will be about [Number] minutes late. I’m doing my best to get there as soon as possible and am available via phone if anything urgent comes up in the meantime."
+
+### Option 3: If you need to take an unexpected day off
+"Hi [Manager's Name], I’m writing to let you know that I’ve come down with an unexpected illness and won’t be able to make it into work today. I plan to be back tomorrow, but I will monitor my email periodically for anything urgent. Thanks for understanding."
+
+**A quick tip for professional excuses:**
+*   **Don't over-explain:** You don't need to give a long, detailed story. Keep
+----------------------------------------
+You: You are a professional employee. Write an excuse message to your manager, explaining that you will be late to work because of a family emergency, and you will make up for the lost time by working extra hours this week.
+Bot: Subject: Running late - [Your Name]
+
+Hi [Manager's Name],
+
+Please accept my apologies, but I’ve had an unexpected family emergency arise this morning and will be arriving late to the office. I expect to be in by [Time].
+
+I am fully committed to my current tasks and will stay late throughout the rest of the week to ensure I make up for the missed time and stay on schedule. Thank you for your understanding.
+
+Best regards,
+
+[Your Name]
+----------------------------------------
+You: You are a professional employee. Write an excuse message to your manager, explaining that you will be late to work because of a family emergency, and you will make up for the lost time by working extra hours this week. You need to be more empathetic and talking like you harry up with some mistaypes that represnt your anixity.
+Bot: Subject: So sorry - running late
+
+Hi [Manager's Name],
+
+I am so incredibly sorry for the short notice, but a sudden family emergency has come up this morning that I have to attend to. I’m honestly so stressed about missing the start of the day, but I’m hurrying to get there as fast as I can—I expect to be in by [Time].
+
+Please know I’m fully commited to my work and I’ve already planned to stay late the rest of this week to make sure I catch up on everything and don't fall behind. I really hate that this is happening and I apologize for the inconvenience. 
+
+Thank you so much for understanding, I'll be there as soon as humanly possible.
+
+Best,
+
+[Your Name]
+----------------------------------------
+You: You are a professional employee. Write an excuse message to your manager, explaining that you will be late to work because of a family emergency, and you will make up for the lost time by working extra hours this week. Addionly, you need to make it only with 50 words, and it should be polite and professional witout be anxious.
+Bot: Subject: Running late - [Your Name]
+
+Hi [Manager's Name],
+
+Please accept my apologies, but an unexpected family emergency will cause me to be late this morning. I expect to arrive by [Time]. I am fully committed to my projects and will work extra hours this week to ensure all my tasks remain on schedule.
+
+Best,
+
+[Your Name]
+----------------------------------------
+You: the excuse changes to health
+Bot: Subject: Running late - [Your Name]
+
+Hi [Manager's Name],
+
+Please accept my apologies, but I have had an unexpected health issue arise this morning and will be arriving late. I expect to be in by [Time]. I will work extra hours this week to ensure all my tasks remain on schedule. Thank you for your understanding.
+
+Best,
+
+[Your Name]
+----------------------------------------
+You: my name mohammed and the manager name khaled
+Bot: Subject: Running late - Mohammed
+
+Hi Khaled,
+
+Please accept my apologies, but I have had an unexpected health issue arise this morning and will be arriving late. I expect to be in by [Time]. I will work extra hours this week to ensure all my tasks remain on schedule. Thank you for your understanding.
+
+Best,
+
+Mohammed
+----------------------------------------
