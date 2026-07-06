@@ -50,7 +50,7 @@ while True:
     print("---")
 
     # Append this turn (prompt + response) to the log file as evidence,
-    with open(log_filename, "a", encoding="utf-8") as f:
+    with open(log_filename, "a", encoding="utf-8", errors="replace") as f:
         f.write(f"You: {user_input}\n")
         f.write(f"Bot: {bot_response}\n")
         f.write("-" * 40 + "\n")

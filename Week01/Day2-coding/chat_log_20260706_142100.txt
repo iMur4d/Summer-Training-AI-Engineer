@@ -1,0 +1,51 @@
+You: write a excuse
+Bot: To give you the best excuse, I need to know **what you are trying to get out of.** 
+
+Here are a few options based on common situations. Choose the one that fits best:
+
+### 1. For missing a social event (party, dinner, etc.)
+*   **The "Not feeling well" excuse:** "I’m so sorry, but I’ve come down with a bit of a migraine/bug and don’t think I’ll be able to make it tonight. I’m going to stay in and rest so I can recover quickly. Have a great time!"
+*   **The "Family obligation" excuse:** "I’m so sorry, something unexpected came up with my family that I need to take care of tonight. I was really looking forward to it, but I won’t be able to make it."
+
+### 2. For being late to work or a meeting
+*   **The "Traffic/Transit" excuse:** "I am so sorry I’m running late. There was a major accident/delay on [Road Name/Train Line] that has traffic completely backed up. I’m doing my best to get there as quickly as I can."
+*   **The "Technical difficulty" excuse (for remote work):** "My apologies, I’ve been having some major connectivity issues with my home internet this morning. I’m working on getting it sorted now
+----------------------------------------
+You: You are a professional employee. Write a short excuse message to your manager.
+Bot: To provide the most effective excuse, it is best to keep it professional, brief, and focused on the solution. Choose the option that best fits your situation:
+
+### Option 1: If you are running late
+"Hi [Manager's Name], please accept my apologies, but I am running about [Number] minutes late this morning due to [unexpected traffic / a public transit delay]. I am doing my best to get there as quickly as I can and will make sure to catch up on everything as soon as I arrive."
+
+### Option 2: If you are feeling unwell (but can work remotely)
+"Hi [Manager's Name], I’ve woken up feeling a bit under the weather today. To avoid potentially spreading anything, I’m going to work from home today. I’m fully available online and don't anticipate any impact on my tasks."
+
+### Option 3: If you need to take a personal emergency hour
+"Hi [Manager's Name], an unexpected personal matter has come up that requires my immediate attention this morning. I expect to be online/in the office by [Time]. I apologize for the short notice and will ensure I prioritize [Current Project] as soon as I’m back."
+
+### Option 4: If you have a technical issue (Remote Work)
+"Hi [Manager's Name], I’m currently experiencing significant internet connectivity issues at my home. I’m
+----------------------------------------
+You: You are a professional employee. Write an excuse message to your manager, explaining that you will be late to work because of a family emergency, and you will make up for the lost time by working extra hours this week.
+Bot: Here is a professional message you can send to your manager:
+
+"Hi [Manager's Name],
+
+Please accept my apologies, but I will be arriving late to the office this morning due to an unexpected family emergency that requires my immediate attention. I expect to be in by [Time].
+
+I am committed to staying late this week to make up for the missed time and ensure that my current projects remain on track. Thank you for your understanding."
+----------------------------------------
+You: You are a professional employee. Write an excuse message to your manager, explaining that you will be late to work because of a family emergency, and you will make up for the lost time by working extra hours this week. You need to be more empathetic and talking like you harry up with some mistaypes that represnt your anixity.
+Bot: Hi [Manager's Name],
+
+I am so, so sorry to do this, but I’ve had a sudden famliy emergency come up this morning that I have to deal with right now. I’m honestly so streesed about it and hate that this is happening on a workday, but I am doing my best to get it sorted as fast as I can.
+
+I think I should be there by [Time] at the latest. I feel terrible about being late and I promise I will stay late every day this week to make up for the hours and ensure I don't fall behind on [Project Name]. 
+
+Thank you so much for being understanding, I’m really sorry for the inconveince.
+----------------------------------------
+You: You are a professional employee. Write an excuse message to your manager, explaining that you will be late to work because of a family emergency, and you will make up for the lost time by working extra hours this week. Addionly, you need to make it only with 50 words, and it should be polite and professional witout be anxious.
+Bot: Hi [Manager's Name],
+
+Please accept my apologies, but an unexpected family emergency requires my attention this morning. I expect to arrive by [Time]. I am fully committed to making up for the lost time by working extra hours this week to ensure all my tasks remain on schedule. Thank you.
+----------------------------------------
