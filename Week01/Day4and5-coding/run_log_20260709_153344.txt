@@ -1,0 +1,48 @@
+Timestamp: 2026-07-09T15:33:44.466030+03:00
+Format: pdf | Output: summarize.pdf
+========================================
+User Input:
+قارن لي بين ثلاث لغات برمجة (Python وJava وJavaScript) من ناحية السرعة وسهولة التعلم والاستخدام، بصيغة جدول داخل PDF. اشرح بالتفصيل لهم وبعض امثله الاكواد.
+
+========================================
+Model Summary:
+# مقارنة بين لغات البرمجة: Python وJava وJavaScript
+
+تعد لغات Python وJava وJavaScript من أكثر اللغات انتشاراً في عالم البرمجة، ولكل منها خصائص تميزها في مجالات معينة.
+
+## جدول المقارنة
+
+| لغة البرمجة | سهولة التعلم | السرعة | الاستخدام الأساسي |
+| :--- | :--- | :--- | :--- |
+| Python | سهلة جداً | بطيئة نسبياً | علوم البيانات، الذكاء الاصطناعي |
+| Java | متوسطة | سريعة | تطبيقات الأندرويد، الأنظمة الضخمة |
+| JavaScript | متوسطة | سريعة (محرك V8) | تطوير الويب (Frontend/Backend) |
+
+> تعتبر Python الخيار الأمثل للمبتدئين، بينما تتفوق Java في الأنظمة التي تتطلب أداءً عالياً واستقراراً كبيراً، وتظل JavaScript هي اللغة المهيمنة على تطوير واجهات الويب.
+
+## أمثلة برمجية
+
+### Python
+```python
+print("Hello, World!")
+```
+
+### Java
+```java
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}
+```
+
+### JavaScript
+```javascript
+console.log("Hello, World!");
+```
+========================================
+[RAW GEMINI API RESPONSE OBJECT]
+{
+  "summary": "# مقارنة بين لغات البرمجة: Python وJava وJavaScript\n\nتعد لغات Python وJava وJavaScript من أكثر اللغات انتشاراً في عالم البرمجة، ولكل منها خصائص تميزها في مجالات معينة.\n\n## جدول المقارنة\n\n| لغة البرمجة | سهولة التعلم | السرعة | الاستخدام الأساسي |\n| :--- | :--- | :--- | :--- |\n| Python | سهلة جداً | بطيئة نسبياً | علوم البيانات، الذكاء الاصطناعي |\n| Java | متوسطة | سريعة | تطبيقات الأندرويد، الأنظمة الضخمة |\n| JavaScript | متوسطة | سريعة (محرك V8) | تطوير الويب (Frontend/Backend) |\n\n> تعتبر Python الخيار الأمثل للمبتدئين، بينما تتفوق Java في الأنظمة التي تتطلب أداءً عالياً واستقراراً كبيراً، وتظل JavaScript هي اللغة المهيمنة على تطوير واجهات الويب.\n\n## أمثلة برمجية\n\n### Python\n```python\nprint(\"Hello, World!\")\n```\n\n### Java\n```java\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}\n```\n\n### JavaScript\n```javascript\nconsole.log(\"Hello, World!\");\n```",
+  "file_format": "pdf"
+}

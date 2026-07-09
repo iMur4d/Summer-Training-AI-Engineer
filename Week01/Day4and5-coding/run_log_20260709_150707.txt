@@ -1,0 +1,28 @@
+Timestamp: 2026-07-09T15:07:07.108954+03:00
+Format: pdf | Output: summarize.pdf
+========================================
+User Input:
+I need to prepare a document for our upcoming architecture review meeting. Please summarize the data cleanup methods below so I can print it on A4 paper for the team.
+
+Technical Overview:
+When preprocessing data for AI models, engineers often compare hard-coded logic against ML-based approach. Hard-coded rules (like using Regular Expressions in Python) have zero execution cost and run in microseconds. For example, stripping extra whitespace can be done using code like: clean_text = re.sub(r'\s+', ' ', raw_text). This is highly deterministic but fails against unpredictable user inputs. On the other hand, using a lightweight ML model (such as an 8B parameters language model) provides high adaptability and semantic understanding. However, the trade-off is massive resource consumption, requiring significant VRAM and creating substantial latency. For a high-performance system, hard-coded sanitization should always be the first line of defense, reserving ML routing only for complex intent classification.
+========================================
+Model Summary:
+# Data Preprocessing Strategies
+
+When preparing data for AI models, engineers must balance performance and adaptability. The following table compares the two primary approaches for data sanitization:
+
+| Feature | Hard-coded Logic | ML-based Approach |
+| :--- | :--- | :--- |
+| Implementation | Regular Expressions (e.g., `re.sub`) | 8B Parameter Language Models |
+| Execution Cost | Negligible (microseconds) | High (significant VRAM/latency) |
+| Reliability | Deterministic | Adaptable/Semantic |
+| Best Use Case | Simple sanitization (e.g., whitespace) | Complex intent classification |
+
+> For a high-performance system, hard-coded sanitization should always be the first line of defense, reserving ML routing only for complex intent classification.
+========================================
+[RAW GEMINI API RESPONSE OBJECT]
+{
+  "summary": "# Data Preprocessing Strategies\n\nWhen preparing data for AI models, engineers must balance performance and adaptability. The following table compares the two primary approaches for data sanitization:\n\n| Feature | Hard-coded Logic | ML-based Approach |\n| :--- | :--- | :--- |\n| Implementation | Regular Expressions (e.g., `re.sub`) | 8B Parameter Language Models |\n| Execution Cost | Negligible (microseconds) | High (significant VRAM/latency) |\n| Reliability | Deterministic | Adaptable/Semantic |\n| Best Use Case | Simple sanitization (e.g., whitespace) | Complex intent classification |\n\n> For a high-performance system, hard-coded sanitization should always be the first line of defense, reserving ML routing only for complex intent classification.",
+  "file_format": "pdf"
+}

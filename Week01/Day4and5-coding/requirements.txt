@@ -1,0 +1,6 @@
+google-genai
+python-dotenv
+markdown-it-py
+linkify-it-py
+weasyprint
+streamlit
