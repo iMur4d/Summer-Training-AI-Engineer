@@ -5,8 +5,8 @@ def generate_markdown(data: dict) -> str:
     Converts the validated dictionary data into the required Markdown structure.
     Assumes the dictionary is fully validated.
     """
-    # Use current local ISO 8601 time with timezone
-    now_iso = datetime.now().astimezone().isoformat()
+    # Use current local time in a nice format for Obsidian (YYYY-MM-DD HH:MM)
+    now_formatted = datetime.now().strftime("%Y-%m-%d %H:%M")
     
     # Format tags for YAML (no # prefix)
     tags_yaml = f"[{', '.join(data.get('tags', []))}]"
@@ -25,7 +25,7 @@ def generate_markdown(data: dict) -> str:
             
     md = f"""---
 title: "{data.get('title', '')}"
-date: {now_iso}
+date: {now_formatted}
 tags: {tags_yaml}
 ---
 

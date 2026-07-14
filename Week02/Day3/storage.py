@@ -6,18 +6,24 @@ from dotenv import load_dotenv
 # Load environment variables in case they aren't loaded yet
 load_dotenv()
 
-# Get the vault path from the environment, defaulting to './vault'
-_raw_vault = os.getenv("VAULT_PATH", "./vault").strip()
-VAULT_PATH = _raw_vault if _raw_vault else "./vault"
+# Get the directory where storage.py is located (e.g., Week02/Day3)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_VAULT = os.path.join(BASE_DIR, "vault")
+
+# Get the vault path from the environment, defaulting to the folder next to storage.py
+_raw_vault = os.getenv("VAULT_PATH", DEFAULT_VAULT).strip()
+VAULT_PATH = _raw_vault if _raw_vault else DEFAULT_VAULT
 
 def generate_safe_slug(title: str) -> str:
     """
-    Converts a title string into a safe, collision-resistant filename slug.
+    Converts a title string into a safe, collision-resistant filename slug,
+    supporting English and Arabic (Unicode) characters.
     """
     # Convert to lowercase and replace spaces with hyphens
     slug = title.lower().replace(" ", "-")
-    # Remove any non-alphanumeric or hyphen characters
-    slug = re.sub(r'[^a-z0-9\-]', '', slug)
+    # Remove any character that is NOT a unicode word character (\w) or a hyphen
+    # \w natively supports Arabic letters in Python 3
+    slug = re.sub(r'[^\w\-]', '', slug)
     # Remove multiple consecutive hyphens
     slug = re.sub(r'-+', '-', slug).strip('-')
     
