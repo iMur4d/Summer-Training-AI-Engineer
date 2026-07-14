@@ -31,7 +31,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(response_text)
 
 def main():
-    print("Starting AI Thought Refinement Assistant Bot (v0.2.0)...")
+    print("Starting AI Thought Refinement Assistant Bot (v0.3.0)...")
     
     # Create the Telegram Application
     application = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()

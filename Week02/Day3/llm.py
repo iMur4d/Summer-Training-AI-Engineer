@@ -1,5 +1,6 @@
 import os
 from google import genai
+from google.genai import types
 from google.genai.errors import APIError
 from dotenv import load_dotenv
 
@@ -22,14 +23,33 @@ def generate_response(text: str) -> str:
     
     print(f"DEBUG: Using model '{model_name}' for generation.")
     
+    # Load system prompt instruction
+    system_instruction = ""
+    prompt_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "system_prompt.txt")
+    try:
+        if os.path.exists(prompt_path):
+            with open(prompt_path, "r", encoding="utf-8") as f:
+                system_instruction = f.read().strip()
+        else:
+            print(f"WARNING: system_prompt.txt not found at {prompt_path}. Proceeding without system instruction.")
+    except Exception as e:
+        print(f"WARNING: Failed to read system_prompt.txt: {e}. Proceeding without system instruction.")
+    
     try:
         # Initialize client with the current API key
         client = genai.Client(api_key=api_key)
         
+        # Configure model request
+        config = types.GenerateContentConfig(
+            system_instruction=system_instruction if system_instruction else None,
+            temperature=0.2
+        )
+        
         # Call the models generate_content API
         response = client.models.generate_content(
             model=model_name,
-            contents=text
+            contents=text,
+            config=config
         )
         
         # If response is empty or response.text is not populated

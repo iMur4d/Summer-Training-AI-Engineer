@@ -26,6 +26,10 @@ The application shall:
 1. Receive a text message from a Telegram bot.
 
 2. Send the user's message to an LLM.
+2.1 If the message does not represent a meaningful thought, idea, or note
+     (e.g., a greeting or general question), the assistant must politely
+     reject it instead of generating a note, and reply to the user
+     accordingly on Telegram.
 
 3. Transform the raw thought into a structured note containing:
 
