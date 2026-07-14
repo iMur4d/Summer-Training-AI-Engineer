@@ -1,8 +1,10 @@
 import os
 import sys
+import asyncio
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filters
+from llm import generate_response
 
 # Load environment variables from .env file
 load_dotenv()
@@ -22,11 +24,14 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     print(f"Received message from @{username}: {message_text}")
     
-    # Reply with a simple confirmation message
-    await update.message.reply_text("Received your thought!")
+    # Send user message to Gemini/Gemma LLM asynchronously
+    response_text = await asyncio.to_thread(generate_response, message_text)
+    
+    # Reply with the LLM response
+    await update.message.reply_text(response_text)
 
 def main():
-    print("Starting AI Thought Refinement Assistant Bot (v0.1.0)...")
+    print("Starting AI Thought Refinement Assistant Bot (v0.2.0)...")
     
     # Create the Telegram Application
     application = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
