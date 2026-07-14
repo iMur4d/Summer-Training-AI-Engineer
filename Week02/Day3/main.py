@@ -7,6 +7,7 @@ from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filte
 from llm import generate_response
 from validator import parse_and_validate
 from markdown_generator import generate_markdown
+from storage import save_note
 
 # Load environment variables from .env file
 load_dotenv()
@@ -34,7 +35,16 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if is_valid:
         # Generate markdown if valid
-        final_response = generate_markdown(data)
+        markdown_text = generate_markdown(data)
+        
+        # Save the note to local storage
+        title = data.get("title", "Untitled")
+        success, result = save_note(title, markdown_text)
+        
+        if success:
+            final_response = f"✅ Note saved: {title}"
+        else:
+            final_response = f"⚠️ Couldn't save your note: {result}"
     else:
         # If invalid (e.g., refusal message, schema error), fallback to the provided message
         # Prepared for retry logic in future versions: if not is_valid and retries < MAX...
@@ -44,7 +54,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(final_response)
 
 def main():
-    print("Starting AI Thought Refinement Assistant Bot (v0.4.0)...")
+    print("Starting AI Thought Refinement Assistant Bot (v0.5.0)...")
     
     # Create the Telegram Application
     application = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
