@@ -109,17 +109,48 @@ Success Criteria
 
 ---
 
-## v0.6.0 — Code Quality (Deferred)
+## v0.6.0 — Web Interface (Streamlit Viewer)
+
+Goal
+
+Provide a simple visual interface to browse saved notes, in addition to
+the Telegram bot, as required by the supervisor.
+
+Features
+
+- A Streamlit page that lists all Markdown notes currently saved in the
+  local Obsidian vault.
+- Selecting a note displays its full content (title, summary, key points,
+  tags, open questions) in a readable format.
+- Read-only. This is a viewer, not an editor.
+
+Explicitly NOT included in this version
+
+- No interactive knowledge graph.
+- No node/edge visualization.
+- No semantic linking between notes.
+- No editing or creating notes from the interface.
+- No search or filtering beyond a simple list (unless time allows after
+  the core viewer works).
+
+Success Criteria
+
+A user can open the Streamlit app, see the list of saved notes, and view
+the full content of any note that was generated through the Telegram bot.
+
+---
+
+## v0.7.0 — Code Quality (Deferred)
 
 **Do not implement this version during Day 2 (initial build).**
 
 This version is intentionally scheduled to run only after the Day 3 manual
 code review (see AGENTS.md and the Week 2 schedule). The code produced through
-v0.5.0 should reach Day 3 in its "as-built" state — functional but unpolished —
+v0.6.0 should reach Day 3 in its "as-built" state — functional but unpolished —
 so there is real, unrefactored code available to review, annotate, and improve
 by hand as that day's task requires.
 
-Only start v0.6.0 after Day 3's manual review is complete and approved.
+Only start v0.7.0 after Day 3's manual review is complete and approved.
 
 Goal
 
@@ -169,7 +200,12 @@ Save to Vault
 
 Confirmation sent back to Telegram
 
+↓
+
+Viewable via Streamlit Interface
+
 Success Criteria
 
-The complete workflow functions end-to-end, and the user receives a clear
-confirmation (success or failure) for every submitted note.
+The complete workflow functions end-to-end, the user receives a clear
+confirmation (success or failure) for every submitted note, and all saved
+notes are browsable through the Streamlit interface.
