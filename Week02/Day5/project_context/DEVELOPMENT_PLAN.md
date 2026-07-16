@@ -1,149 +1,69 @@
 # Development Plan
 
-# Version Roadmap
+This document outlines the roadmap of the Obsidian Brain MVP from inception to its stable v1.0.0 release, followed by the future vision for post-MVP enhancements.
 
-The application must be developed incrementally.
+## Completed Roadmap (MVP Phase)
 
-Each version must be fully functional before moving to the next one.
+### v0.1.0 — Telegram Communication
+- Set up a basic Python Telegram Bot.
+- Echo user messages to confirm connectivity.
+- *Status: Completed*
 
-Never skip versions.
+### v0.2.0 — LLM Integration
+- Connect the bot to the Google Gemini API (or Gemma).
+- Send user messages to the model and return the raw generated response to the user.
+- *Status: Completed*
 
-Do not implement features from future versions.
+### v0.3.0 — Thought Refinement
+- Implement a system prompt that forces the LLM to act as a thought organizer instead of a conversational chatbot.
+- Structure output into JSON format (Title, Summary, Key Points, Tags).
+- Handle non-thought inputs (greetings, meaningless queries) gracefully.
+- *Status: Completed*
 
----
+### v0.4.0 — Markdown Generation
+- Validate the JSON output received from the LLM.
+- Convert the validated JSON into structured Markdown.
+- Add YAML frontmatter for compatibility with Obsidian.
+- *Status: Completed*
 
-## v0.1.0 — Telegram Communication ✅ Complete
+### v0.5.0 — Local Storage
+- Automatically save the generated Markdown files to a local `vault/` directory.
+- Generate safe, collision-resistant filenames.
+- Reply to the Telegram user with a success confirmation.
+- *Status: Completed*
 
-Goal: A working Telegram bot.
+### v0.6.0 — Knowledge OS Interface
+- Build a Streamlit dashboard to interact with the local vault.
+- Implement a 3D visualization using Three.js to render notes in a space.
+- Add a sidebar for easy navigation and searching.
+- Integrate a markdown reader to view the full text of any saved note.
+- *Status: Completed*
 
----
-
-## v0.2.0 — LLM Integration ✅ Complete
-
-Goal: Connect the Telegram bot to Gemini/Gemma.
-
----
-
-## v0.3.0 — Thought Refinement ✅ Complete
-
-Goal: Transform raw thoughts into structured knowledge (Title, Summary,
-Key Points, Tags, Open Questions), without hallucinating missing information.
-
----
-
-## v0.4.0 — Markdown Generation ✅ Complete
-
-Goal: Convert structured LLM output into a consistent Markdown template.
-
-Refactored into a layered, provider-agnostic architecture:
-`llm.py` (communication) → `validator.py` (JSON validation) →
-`markdown_generator.py` (presentation) → `main.py` (orchestration).
-
----
-
-## v0.5.0 — Local Storage ✅ Complete
-
-Goal: Save notes locally with safe filenames, and confirm success/failure
-back to the user on Telegram.
-
-Tested: successful save, filename collision handling, simulated failure
-path (no crash), and real end-to-end Telegram flow (Arabic + English).
-
----
-
-## v0.6.0 — Knowledge OS Interface ✅ Stabilized (may receive minor fixes on Day 4)
-
-Goal: Provide a visual, read-only interface for exploring saved notes,
-in addition to the Telegram bot (per supervisor's request for a UI
-beyond chat).
-
-Delivered:
-
-- Streamlit app (`app.py`) reading real notes from the local vault.
-- Interactive 3D visual exploration (`brain_graph.html`, `brain.js`,
-  `styles.css`) with a search/browse sidebar and a Markdown reading view.
-- Visual grouping ("lobes") is a cosmetic/deterministic categorization
-  based on tags — not semantic AI classification.
-- Links/relationships between notes are intentionally empty
-  (`"links": []`) — visual scaffolding only, no semantic linking
-  implemented in this version.
-
-Explicitly NOT included (confirmed in code and honored):
-
-- No automatic semantic linking.
-- No AI-generated relationships.
-- No embeddings or vector databases.
-- No note editing, no multi-user support.
-
-Note: the interface does not auto-refresh when a new note is saved via
-Telegram; the browser must be manually refreshed. This is a known,
-accepted limitation for the MVP.
+### v1.0.0 — MVP Release (Completed)
+- **Review-before-save Telegram workflow:** Bot sends a structured preview before saving.
+- **Save / Discard confirmation:** Inline buttons added to the Telegram interface.
+- **Strict thought classification:** System prompt restricted to 6 strict categories.
+- **Improved Thought Refinement system prompt:** Focuses on extracting the abstract knowledge model rather than summarizing text.
+- **Validator synchronization:** Python backend strictly enforces the 6 allowed `thought_types`.
+- **Data-driven visualization using thought_type:** Frontend colors nodes strictly by their real data type.
+- **Removal of fake neuroscience mappings:** Stripped arbitrary biological lobe assignments from the graph.
+- **Improved frontend UX and visualization polish:** Added hover-highlighting for related types, recency-based node sizing, and custom UI scrollbars.
+- **Production-ready repository cleanup:** Final modular architecture established, unused code removed, and documentation aligned.
+- *Status: Completed*
 
 ---
 
-## v1.0.0 — MVP Release
+## Future Vision (Post v1.0.0)
 
-Goal: Complete, tested, end-to-end MVP.
+These features represent the next generation of the application. They are intentionally excluded from the MVP to keep the initial architecture simple and stable.
 
-Workflow
+### AI & Knowledge Graph Enhancements
+- **Semantic Linking:** Automatically identify connections between different notes.
+- **Embeddings & Vector Database:** Store notes as vectors to enable semantic search and Retrieval-Augmented Generation (RAG).
+- **Automatic Note Relationships:** Programmatically generate the "links" array in the graph data to draw edges between related nodes.
+- **Contextual Memory:** Allow the LLM to read previous notes when refining a new thought.
 
-Telegram → Gemma → Thought Refinement → Markdown → Save to Vault →
-Telegram Confirmation → Browsable via Knowledge OS Interface
-
-Success Criteria: The complete workflow functions end-to-end, notes are
-never lost or silently failed, and all saved notes are visually
-browsable and readable through the interface.
-
----
-
-# Current Task — Day 4: Debugging
-
-Per the supervisor's Day 4 task: intentionally introduce 3 realistic bugs,
-diagnose and fix them with AI assistance, and document each as
-Symptom → Diagnosis → Fix. This is bug-fixing work on the existing
-v0.1.0–v0.6.0 codebase — it does not introduce new features or change
-the JSON schema, the architecture, or any file's core responsibility.
-
----
-
-# Future Vision (Post-MVP — Not Part of This Week's Deliverable)
-
-These ideas were explored during development but intentionally deferred
-beyond the one-week MVP to protect scope and delivery stability. They
-remain valuable directions for future iterations of the project.
-
-## Context Window / Lightweight Memory
-
-Allow related follow-up messages to build on a recent thought instead of
-being treated as fully independent (currently: strictly single-turn, per
-SPECIFICATION.md). Deferred because it is a genuine architectural
-challenge (relevance selection, token budget, ambiguity handling) that
-risks destabilizing a working MVP under time pressure.
-
-## v0.7.0 (Future) — Cognitive Representation Engine
-
-A more refined thought-refinement layer: improved system prompt design,
-richer classification of thought types (Concept, Task, Question,
-Observation, Insight, Research Idea), and a deterministic "Brain Mapping"
-layer to replace tag-based cosmetic grouping with something more
-intentional. This is a logic/prompt-quality upgrade, not a new
-capability — a strong candidate for a v2 iteration once the MVP is
-stable and reviewed.
-
-## v0.8.0 (Future) — Knowledge Connections
-
-Semantic relationships between notes, AI-generated related-note
-suggestions, and interactive connections inside the visual interface.
-Explicitly excluded from the MVP (see SPECIFICATION.md: no embeddings,
-no vector databases, no automatic note linking).
-
-## Other deferred ideas
-
-- Hosting the Streamlit interface as a public web app.
-- Live-refresh of the interface when new notes are saved.
-- Structured logging/observability — considered, deliberately dropped
-  for the MVP to avoid adding complexity without a clear immediate need.
-
-Note: Docker/containerized packaging is a deployment option, not a
-feature, and is not part of this list — it can be applied to the
-existing app once stable, whenever convenient.
+### Workflow & Infrastructure Enhancements
+- **Editing Notes:** Allow users to edit or append to existing notes via the Telegram bot or frontend UI.
+- **Cloud Deployment:** Package the backend into Docker containers for remote hosting.
+- **Live Synchronization:** Seamlessly sync the local vault with remote storage (e.g., Google Drive, AWS S3) or the native Obsidian Sync service.

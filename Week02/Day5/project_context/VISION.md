@@ -50,18 +50,13 @@ Its primary goals are:
 
 ## Future Direction
 
-Future versions may gradually introduce:
+With the v1.0.0 MVP successfully establishing the core pipeline (thought -> refinement -> storage -> visualization), future versions will gradually introduce advanced capabilities designed to bridge the gap between static notes and a living digital brain:
 
-* Richer knowledge representation.
-* Cognitive visualization improvements.
-* Semantic relationships between notes.
-* Suggested knowledge connections.
-* Context-aware thought refinement.
-* Long-term memory.
-* Retrieval-Augmented Generation (RAG).
-* Local LLM support.
-* Semantic search.
-* Interactive knowledge graphs.
+* **Semantic Linking & Embeddings:** Using vector databases to map the semantic similarity between thoughts natively.
+* **Automatic Note Relationships:** Programmatically drawing edges and links between ideas without manual tagging.
+* **Contextual Memory:** Allowing the AI to read and synthesize past notes when processing new thoughts.
+* **Editing Capabilities:** Allowing users to directly update or append to existing knowledge from Telegram or the web interface.
+* **Infrastructure Scaling:** Expanding the current architecture to include cloud deployment and live synchronization with cloud providers or native Obsidian Sync.
 
 These capabilities should extend the existing architecture rather than replace it.
 
@@ -74,4 +69,3 @@ Every future feature should answer one question:
 **Does this help people understand, organize, or explore their own knowledge better?**
 
 If the answer is no, it does not belong in this project.
-

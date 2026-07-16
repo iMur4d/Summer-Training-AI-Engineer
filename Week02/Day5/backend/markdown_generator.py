@@ -26,10 +26,12 @@ def generate_markdown(data: dict) -> str:
     md = f"""---
 title: "{data.get('title', '')}"
 date: {now_formatted}
+thought_type: "{data.get('thought_type', 'Observation')}"
 tags: {tags_yaml}
 ---
 
 # {data.get('title', '')}
+*Type: {data.get('thought_type', 'Observation')}*
 
 ## Summary
 {data.get('summary', '')}

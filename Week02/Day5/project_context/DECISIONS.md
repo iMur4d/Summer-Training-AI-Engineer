@@ -84,6 +84,38 @@ The generated notes remain accessible even without the application.
 
 ---
 
+## Strict Thought Classification
+
+**Decision**
+
+Enforce exactly 6 static categories (`Concept, Task, Question, Observation, Insight, Research Idea`) for the `thought_type` field across both the LLM prompt and the Python validation layer.
+
+**Reason**
+
+LLMs are prone to hallucinating arbitrary categories (e.g., "Project Idea", "Note", "Brainstorm") which fragments the knowledge base. A strictly constrained list forces the AI to extract the underlying abstract knowledge model rather than just acting as a summarizer.
+
+**Impact**
+
+The frontend visualization can safely and deterministically group nodes by type, and the user gains a highly organized, predictable vault structure.
+
+---
+
+## Review-Before-Save Workflow
+
+**Decision**
+
+Implement an in-memory `PENDING_NOTES` state in the Telegram bot to display a preview of the parsed thought alongside inline Save/Discard buttons, rather than saving to disk immediately.
+
+**Reason**
+
+LLMs occasionally misinterpret a thought or miss the user's intent. Giving the user a chance to review the generated structure ensures that no corrupted, hallucinated, or incorrect notes permanently pollute the Obsidian vault.
+
+**Impact**
+
+The bot architecture requires lightweight state management and callback handlers, but the resulting data purity in the vault is vastly improved.
+
+---
+
 ## MVP Scope Protection
 
 **Decision**

@@ -1,12 +1,14 @@
 // ==========================================
 // CONFIGURATION
 // ==========================================
-const LOBE_COLORS = {
-    'frontal': { r: 92, g: 225, b: 230 },
-    'occipital': { r: 217, g: 70, b: 239 },
-    'temporal': { r: 255, g: 158, b: 0 },
-    'cerebellum': { r: 0, g: 255, b: 128 },
-    'stem': { r: 255, g: 255, b: 255 }
+const TYPE_COLORS = {
+    'Concept': { r: 0, g: 229, b: 255 },
+    'Task': { r: 255, g: 158, b: 0 },
+    'Question': { r: 255, g: 0, b: 255 },
+    'Observation': { r: 0, g: 255, b: 128 },
+    'Insight': { r: 255, g: 234, b: 0 },
+    'Research Idea': { r: 138, g: 43, b: 226 },
+    'Unknown': { r: 255, g: 255, b: 255 }
 };
 const DEFAULT_COLOR = { r: 40, g: 160, b: 210 };
 const PROJECT_DEFAULT_COLOR = { r: 60, g: 240, b: 255 };
@@ -25,9 +27,8 @@ class KnowledgeObject {
         this.date = data.date || "Unknown Date";
         this.tags = data.tags || [];
         this.raw_content = data.raw_content || "";
-        this.lobe = data.lobe || "frontal";
+        this.thought_type = data.thought_type || "Observation";
         
-        // Extensible generic metadata store for future v0.8+ integrations
         this.metadata = {
             semanticVector: [],
             aiInsights: [],
@@ -98,7 +99,6 @@ void main() {
     vTime = uTime;
     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
     float depth = -mvPosition.z;
-    // Increased atmospheric depth fog
     vDepthFade = smoothstep(1800.0, 400.0, depth);
     
     float breathe = 1.0 + 0.06 * sin(uTime * 2.0 + position.x * 0.02 + position.y * 0.03);
@@ -224,21 +224,15 @@ scene.add(starsMesh);
 // BRAIN NODES & GRAPH GENERATION
 // ==========================================
 function computeBrainShape(r, theta, phi) {
-    // Increased scale for better spacing and depth
     const RX = 165, RY = 150, RZ = 240;
     let nx = Math.sin(phi) * Math.cos(theta);
     let ny = Math.sin(phi) * Math.sin(theta);
     let nz = Math.cos(phi);
 
-    let lobe = 'parietal';
-    if (ny > 0.22 && nz > 0.2 && Math.abs(nx) < 0.45) lobe = 'cerebellum';
-    else if (nz < -0.15) lobe = 'frontal';
-    else if (nz > 0.36 && ny < 0.35) lobe = 'occipital';
-    else if (Math.abs(nx) > 0.5 && ny > 0.0 && nz > -0.2 && nz < 0.35) lobe = 'temporal';
-
+    let isCerebellum = (ny > 0.22 && nz > 0.2 && Math.abs(nx) < 0.45);
     let x = RX * r * nx, y = RY * r * ny, z = RZ * r * nz;
 
-    if (lobe !== 'cerebellum') {
+    if (!isCerebellum) {
         let gyrusTime = 12 * theta + Math.sin(phi * 8) * 3.5;
         let ripple = 1.0 + 0.07 * Math.sin(gyrusTime) * Math.sin(phi * 14);
         x *= ripple; y *= ripple; z *= ripple;
@@ -247,24 +241,27 @@ function computeBrainShape(r, theta, phi) {
         x *= (0.82 + 0.18 * zNorm - 0.05 * Math.pow(zNorm, 2));
         y *= (0.90 + 0.10 * zNorm);
     }
-    return { x, y, z, lobe };
+    return { x, y, z };
 }
 
 const logicNodes = [];
 const logicEdges = [];
+
+const TYPES = Object.keys(TYPE_COLORS).filter(t => t !== 'Unknown');
 
 for (let i = 0; i < 1200; i++) {
     const r = 0.55 + 0.45 * Math.pow(Math.random(), 1 / 3);
     const theta = Math.random() * Math.PI * 2;
     const phi = Math.acos((Math.random() * 2) - 1);
     const shape = computeBrainShape(r, theta, phi);
+    const type = TYPES[Math.floor(Math.random() * TYPES.length)];
 
     logicNodes.push({
         origX: shape.x, origY: -shape.y, origZ: shape.z,
         isProject: false,
         knowledgeObj: null,
-        lobe: shape.lobe,
-        highlightColor: LOBE_COLORS[shape.lobe] || DEFAULT_COLOR,
+        type: type,
+        highlightColor: TYPE_COLORS[type] || DEFAULT_COLOR,
         currentColor: { ...DEFAULT_COLOR },
         currentAlphaMult: 1.0,
         baseRadius: Math.random() * 6 + 2,
@@ -275,13 +272,24 @@ for (let i = 0; i < 1200; i++) {
 }
 
 let noteMap = {};
+const now = new Date();
+
 vaultKnowledge.forEach(kObj => {
-    let candidate = logicNodes[Math.floor(Math.random() * logicNodes.length)];
+    let candidate = logicNodes.find(n => !n.isProject);
+    if (!candidate) candidate = logicNodes[Math.floor(Math.random() * logicNodes.length)];
+    
+    // Size by recency
+    let noteDate = new Date(kObj.date);
+    if (isNaN(noteDate)) noteDate = now;
+    const daysOld = (now - noteDate) / (1000 * 60 * 60 * 24);
+    // 0 days old -> scale 1.5, 30+ days old -> scale 0.5
+    const recencyScale = Math.max(0.6, 1.6 - (Math.min(30, Math.max(0, daysOld)) / 30)); 
+
     candidate.isProject = true;
     candidate.knowledgeObj = kObj;
-    candidate.lobe = kObj.lobe || candidate.lobe;
-    candidate.highlightColor = LOBE_COLORS[candidate.lobe] || PROJECT_DEFAULT_COLOR;
-    candidate.baseRadius = 40; // larger core for clear visibility
+    candidate.type = kObj.thought_type;
+    candidate.highlightColor = TYPE_COLORS[candidate.type] || PROJECT_DEFAULT_COLOR;
+    candidate.baseRadius = 35 * recencyScale;
     noteMap[kObj.id] = candidate;
 });
 
@@ -353,7 +361,7 @@ const workspace = document.getElementById('note-workspace');
 
 function openNote(kObj) {
     isMemoryActive = true;
-    document.body.classList.add('reading-mode'); // Dims background webgl
+    document.body.classList.add('reading-mode'); 
     
     document.getElementById('ws-title').innerText = kObj.title;
     document.getElementById('ws-date').innerText = kObj.date;
@@ -385,7 +393,6 @@ function triggerNeuron(node) {
     targetOrbitCenter.set(node.origX, node.origY, node.origZ);
     const nodePos = new THREE.Vector3(node.origX, node.origY, node.origZ);
     const direction = nodePos.clone().normalize();
-    // Gentle cinematic zoom in, not too aggressive
     targetCameraPos.copy(nodePos).add(direction.multiplyScalar(220)); 
     openNote(node.knowledgeObj);
     document.getElementById('sidebar-nav').classList.remove('open');
@@ -406,7 +413,6 @@ function filterNotes() {
         const tags = el.getAttribute('data-tags') || "";
         const content = el.getAttribute('data-content') || "";
         
-        // Future proofing: This can easily be swapped out with a semantic/LLM search over the KnowledgeObjects
         if (title.includes(query) || tags.includes(query) || content.includes(query)) {
             el.style.display = 'flex';
         } else {
@@ -423,7 +429,7 @@ vaultKnowledge.forEach(kObj => {
     el.setAttribute('data-tags', (kObj.tags || []).join(',').toLowerCase());
     el.setAttribute('data-content', (kObj.raw_content || "").toLowerCase());
 
-    const color = LOBE_COLORS[kObj.lobe] || PROJECT_DEFAULT_COLOR;
+    const color = TYPE_COLORS[kObj.thought_type] || PROJECT_DEFAULT_COLOR;
     const rgb = `rgb(${color.r},${color.g},${color.b})`;
 
     el.innerHTML = `<div class="node-icon" style="background: ${rgb}; box-shadow: 0 0 8px ${rgb}"></div> ${kObj.title}`;
@@ -468,6 +474,9 @@ window.addEventListener('mousemove', (e) => {
 
 window.addEventListener('click', (e) => {
     if (e.target.closest('#menu-toggle') || e.target.closest('#sidebar-nav') || e.target.closest('#ui-legend') || e.target.closest('#reset-camera')) return;
+    // Don't close if clicking inside the streamit language switcher
+    if (e.target.closest('[data-testid="stVerticalBlock"]')) return;
+    
     if (workspace.classList.contains('open')) return;
 
     if (hoveredNode && hoveredNode.isProject) {
@@ -496,7 +505,6 @@ function animate() {
     const speedMult = isMemoryActive ? 0.1 : 1.0;
     globalTime += delta * speedMult;
 
-    // Elegant Camera Transition
     if (isMemoryActive) {
         controls.target.lerp(targetOrbitCenter, 0.04);
         camera.position.lerp(targetCameraPos, 0.04);
@@ -514,7 +522,6 @@ function animate() {
     lineMat.uniforms.uTime.value = globalTime;
     starsMat.uniforms.uTime.value = globalTime;
 
-    // Raycaster hover evaluation
     raycaster.setFromCamera(mouse, camera);
     raycaster.params.Points.threshold = 12;
 
@@ -532,7 +539,6 @@ function animate() {
         }
     }
     
-    // Tooltip logic
     if (hoveredNode && hoveredNode.isProject && !isMemoryActive) {
         tooltipTitle.innerText = hoveredNode.knowledgeObj.title;
         tooltipDate.innerText = hoveredNode.knowledgeObj.date;
@@ -543,14 +549,13 @@ function animate() {
         hideTooltip();
     }
 
-    // Legend active class update
     document.querySelectorAll('.legend-item').forEach(el => el.classList.remove('active'));
-    if (hoveredNode && hoveredNode.lobe && hoveredNode.lobe !== 'stem') {
-        const legEl = document.getElementById(`leg-${hoveredNode.lobe}`);
+    if (hoveredNode && hoveredNode.type) {
+        const idName = hoveredNode.type.replace(/\s+/g, '-');
+        const legEl = document.getElementById(`leg-${idName}`);
         if (legEl) legEl.classList.add('active');
     }
 
-    // Colors and pulsing logic
     logicNodes.forEach((node, i) => {
         node.pulseTimer += node.pulseSpeed;
         node.activePulse = node.isPulsing ? (Math.sin(node.pulseTimer) + 1) / 2 : 0;
@@ -562,7 +567,7 @@ function animate() {
             if (node === hoveredNode) {
                 targetColor = node.highlightColor;
                 targetAlphaMult = 2.5;
-            } else if (node.lobe === hoveredNode.lobe && !isMemoryActive) {
+            } else if (node.type === hoveredNode.type && !isMemoryActive) {
                 targetColor = node.highlightColor;
                 targetAlphaMult = 1.0;
             } else if (node.isProject) {

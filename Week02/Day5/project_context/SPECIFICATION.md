@@ -34,14 +34,17 @@ The application shall:
 3. Transform the raw thought into a structured note containing:
 
 - Title
+- Thought Type (Strictly one of: Concept, Task, Question, Observation, Insight, Research Idea)
 - Summary
 - Key Points
 - Tags
 - Open Questions (only when information is incomplete)
 
-4. Generate a Markdown document.
+4. Present a structured preview of the parsed note back to the user on Telegram, asking for confirmation via inline buttons (Save / Discard).
 
-5. Save the Markdown file into a local folder that represents an Obsidian vault.
+5. If the user clicks Save, generate a Markdown document.
+
+6. Save the Markdown file into a local folder that represents an Obsidian vault and confirm success.
 
 ---
 
@@ -63,7 +66,7 @@ The project should:
 Included:
 
 - Telegram text messages only.
-- Single-turn interaction.
+- Single-turn conversational interaction (one-shot processing with UI button callbacks for confirmation).
 - Gemini API as the LLM provider.
 - Markdown generation.
 - Local file storage.
@@ -170,6 +173,10 @@ Telegram Message
 ↓
 
 LLM Processing
+
+↓
+
+Telegram Preview & Review (Save/Discard)
 
 ↓
 

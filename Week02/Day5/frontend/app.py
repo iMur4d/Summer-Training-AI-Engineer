@@ -12,12 +12,12 @@ except ImportError:
 
 st.set_page_config(layout="wide", page_title="Obsidian Brain")
 
-# Initialize language state (Streamlit UI only, notes remain in original language)
+# Initialize language state
 if 'lang' not in st.session_state:
     st.session_state.lang = 'English'
 
-direction = "rtl" if st.session_state.lang == 'العربية' else "ltr"
-text_align = "right" if st.session_state.lang == 'العربية' else "left"
+direction = "ltr"
+text_align = "left"
 
 st.markdown(f"""
 <style>
@@ -47,7 +47,7 @@ st.markdown(f"""
         background-color: #09090b !important;
     }}
     
-    h1, h2, h3, p, .rtl-text {{
+    h1, h2, h3, p {{
         direction: {direction};
         text-align: {text_align};
     }}
@@ -77,10 +77,11 @@ def parse_markdown_file(filepath):
     if tags_match:
         tags = [t.strip() for t in tags_match.group(1).split(',') if t.strip()]
         
-    lobes = ['frontal', 'occipital', 'temporal', 'cerebellum']
-    assigned_lobe = 'frontal'
-    if tags:
-        assigned_lobe = lobes[hash(tags[0]) % len(lobes)]
+    # Extract thought_type
+    thought_type = "Observation"
+    type_match = re.search(r'thought_type:\s*"(.*?)"', content)
+    if type_match:
+        thought_type = type_match.group(1)
         
     # Remove YAML frontmatter from the raw content so it isn't rendered
     raw_content = re.sub(r'^---\n.*?\n---\n', '', content, flags=re.DOTALL).strip()
@@ -91,7 +92,7 @@ def parse_markdown_file(filepath):
         "date": date,
         "tags": tags,
         "raw_content": raw_content,
-        "lobe": assigned_lobe
+        "thought_type": thought_type
     }
 
 def load_notes():
@@ -103,29 +104,14 @@ def load_notes():
                 notes.append(parse_markdown_file(filepath))
     return notes
 
-# Sidebar for Language Selection
-with st.sidebar:
-    selected_lang = st.radio("Language / اللغة", ['English', 'العربية'], index=0 if st.session_state.lang == 'English' else 1)
-    if selected_lang != st.session_state.lang:
-        st.session_state.lang = selected_lang
-        st.rerun()
-
-    st.markdown("---")
-    if st.session_state.lang == 'English':
-        st.markdown("**Instructions:**\n- Drag to rotate the brain.\n- Scroll to zoom.\n- Click on any glowing node to read the note.")
-    else:
-        st.markdown("<div class='rtl-text'><b>التعليمات:</b><br>- اسحب لتدوير الدماغ.<br>- مرر للتكبير والتصغير.<br>- انقر على أي عقدة مضيئة لقراءة الملاحظة.</div>", unsafe_allow_html=True)
-
 
 # Load real notes from Vault
 vault_notes = load_notes()
 
 # Prepare graph data
-# As per v0.6.0 requirements, links/edges are intentionally empty to reflect current capabilities honestly.
 graph_data = json.dumps({
     "nodes": vault_notes,
-    "links": [],  # Empty layer ready for future semantic relationships
-    "explore_text": "Explore Notes" if st.session_state.lang == 'English' else "استكشف الملاحظات"
+    "links": []
 })
 
 # Read HTML template and modules

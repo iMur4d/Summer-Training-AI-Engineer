@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "debugging-the-art-of-fixing-code.md",
+                "file": "تأثير-تحسين-الـ-system-prompt-مقابل-تغيير-النموذج.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "debugging-the-art-of-fixing-code"
+              "title": "تأثير-تحسين-الـ-system-prompt-مقابل-تغيير-النموذج"
             }
           }
         ]
@@ -185,6 +185,13 @@
   },
   "active": "2eb85b3ca22b461f",
   "lastOpenFiles": [
+    "نظام-أتمتة-تنظيم-الأفكار-والربط-المعرفي.md",
+    "مهام-إنهاء-التدريب-والمشروع.md",
+    "تأثير-تحسين-الـ-system-prompt-مقابل-تغيير-النموذج.md",
+    "مساعد-شخصي-لإدارة-الأفكار-وربطها-في-obsidian.md",
+    "نظام-ذكاء-اصطناعي-لتنظيم-المعرفة-الطلابية.md",
+    "arabic-document-information-extraction-architecture.md",
+    "smart-plant-watering-system-with-raspberry-pi.md",
     "مواصفات-مشروع-برمجيات-مفتوح-المصدر.md",
     "untitled-2.md",
     "obsidian-para.md",

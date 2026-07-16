@@ -30,7 +30,7 @@ def parse_and_validate(raw_text: str) -> Tuple[bool, Optional[Dict[str, Any]], s
         return False, None, "Error: The model output is not a JSON object."
         
     # 4. Strict field validation
-    required_strings = ["title", "summary"]
+    required_strings = ["title", "summary", "thought_type"]
     required_lists = ["key_points", "tags", "open_questions"]
     
     for field in required_strings:
@@ -38,6 +38,10 @@ def parse_and_validate(raw_text: str) -> Tuple[bool, Optional[Dict[str, Any]], s
             return False, None, f"Error: Missing required string field '{field}'."
         if not isinstance(data[field], str):
             return False, None, f"Error: Field '{field}' must be a string."
+            
+    allowed_thought_types = {"Concept", "Task", "Question", "Observation", "Insight", "Research Idea"}
+    if data["thought_type"] not in allowed_thought_types:
+        return False, None, f"Error: '{data['thought_type']}' is not a valid thought_type."
             
     for field in required_lists:
         if field not in data:

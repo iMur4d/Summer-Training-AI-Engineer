@@ -1,57 +1,45 @@
-# Week 2 - Day 5
+# Obsidian Brain (v1.0.0 MVP)
 
-## Today's Topic
+## Overview
 
-Project Completion & Repository Organization
+Obsidian Brain is an AI-powered Thought Refinement system that transforms your raw ideas, observations, and tasks into structured knowledge directly via Telegram, saving them into a local Obsidian Vault. It features a stunning 3D Knowledge OS interface to visualize and explore your thoughts.
 
-## Objective
+## Project State: v1.0.0 (MVP Complete)
 
-Finalize the MVP, reorganize the repository into a clean and maintainable structure, prepare the project for future development, and publish the final version to GitHub.
+The MVP is functionally complete and production-ready.
 
----
+The repository is organized into a clean, modular architecture:
 
-## Starting Point
-
-This folder continues the work completed during Week 2.
-
-The following versions have been successfully implemented:
-
-* **v0.1.0** — Telegram bot communication.
-* **v0.2.0** — LLM integration (Gemini/Gemma).
-* **v0.3.0** — Thought Refinement for transforming raw thoughts into structured knowledge while rejecting non-thought messages.
-* **v0.4.0** — Layered, provider-agnostic architecture with JSON validation and Markdown generation.
-* **v0.5.0** — Local Obsidian Vault storage with safe filenames and Telegram save confirmation.
-* **v0.6.0** — Knowledge OS Interface featuring a Streamlit dashboard, 3D Brain visualization, searchable navigation, and Markdown reading workspace.
-
----
-
-## Project State
-
-The MVP is functionally complete.
-
-Today's work focuses on improving the project's long-term maintainability without changing its behavior.
-
-The repository has been reorganized into a cleaner architecture:
-
-* `backend/` — Core application logic.
-* `telegram_bot/` — Telegram interface.
-* `frontend/` — Streamlit application and visual assets.
+* `backend/` — Core application logic (LLM intelligence, validation, Markdown generation, storage).
+* `telegram_bot/` — Interactive Telegram interface with Save/Discard review flows.
+* `frontend/` — Streamlit application and custom 3D web assets.
 * `project_context/` — Project documentation and development context.
 * `vault/` — Local Obsidian knowledge base.
 
-This structure prepares the project for future improvements while keeping the current MVP stable.
-
 ---
 
-## Repository Improvements
+## Core Features
 
-Today's repository improvements include:
+### 1. Thought Refinement (LLM)
+- Acts as a knowledge extraction engine, not a simple summarizer.
+- Strictly categorizes input into one of 6 types: `Concept, Task, Question, Observation, Insight, Research Idea`.
+- Handles invalid inputs (conversations, greetings, empty messages) gracefully without attempting to save them.
 
-* Reorganized the project into standard Python packages.
-* Introduced a dedicated `project_context` folder for project documentation.
-* Improved documentation structure for both developers and AI coding assistants.
-* Updated imports to follow standard Python package conventions.
-* Prepared the repository for future containerization and continued development.
+### 2. Telegram Bot Workflow
+- Users send raw thoughts via Telegram.
+- The bot replies with a structured Markdown preview of how the AI parsed the thought.
+- Inline `[Save]` and `[Discard]` buttons allow the user to review the thought before committing it to the vault.
+
+### 3. Safe Local Storage
+- Automatically generates safe, collision-resistant filenames.
+- Outputs clean Markdown files with YAML frontmatter fully compatible with Obsidian.
+
+### 4. Knowledge OS Interface
+- A visually immersive dashboard built with Streamlit and Three.js.
+- **Data-Driven Visualization**: Notes are placed in a 3D brain silhouette, colored strictly by their `thought_type`.
+- **Recency Scaling**: Newer thoughts appear larger and pulse visibly, gradually shrinking over 30 days.
+- **Hover Logic**: Hovering over a note visually highlights all other notes of the same type.
+- Features a searchable left-hand sidebar and a polished reading workspace for markdown files.
 
 ---
 
@@ -71,22 +59,13 @@ streamlit run frontend/app.py
 
 ---
 
-## Expected Outcome
+## Future Vision
 
-A fully functional MVP with:
+The v1.0.0 MVP focuses entirely on transforming single thoughts into structured notes safely and accurately. 
 
-* Clean modular architecture.
-* Organized project documentation.
-* Telegram-based thought refinement.
-* Markdown knowledge generation.
-* Local Obsidian Vault integration.
-* Interactive Knowledge OS interface.
-* Repository ready for future development and GitHub publication.
-
----
-
-## Notes
-
-The MVP intentionally focuses on transforming raw thoughts into structured knowledge.
-
-Advanced capabilities such as semantic linking, embeddings, RAG, local LLMs, and automatic knowledge relationships remain outside the current MVP scope and are reserved for future versions.
+Future advanced capabilities remain outside the current scope but are planned for post-v1.0.0 development:
+- Semantic linking & AI embeddings
+- Vector databases (RAG)
+- Contextual memory graphs
+- Automatic note relationship mapping
+- Cloud deployment and live synchronization
