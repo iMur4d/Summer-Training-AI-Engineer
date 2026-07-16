@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Brain Knowledge Graph</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- INJECT_CSS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension/lib/index.umd.js"></script>
+</head>
+
+<body>
+    <div id="menu-toggle" onclick="toggleSidebar()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </div>
+
+    <div id="reset-camera" onclick="resetCamera()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+        </svg>
+    </div>
+
+    <div id="node-tooltip">
+        <div id="tooltip-title">Title</div>
+        <div class="tooltip-meta">
+            <span id="tooltip-date"></span>
+            <span id="tooltip-tags"></span>
+        </div>
+    </div>
+
+    <div id="sidebar-nav">
+        <div class="sidebar-header">
+            <input type="text" id="search-box" placeholder="Search notes..." oninput="filterNotes()">
+        </div>
+
+        <div class="sidebar-section">
+            <div class="section-title">Vault</div>
+            <div class="explorer-list" id="explorer-list"></div>
+        </div>
+
+        <div class="sidebar-section" style="opacity: 0.5; flex: 0; margin-bottom: 20px;">
+            <div class="section-title">Recent (v0.7+)</div>
+        </div>
+        <div class="sidebar-section" style="opacity: 0.5; flex: 0; margin-bottom: 40px;">
+            <div class="section-title">Favorites (v0.7+)</div>
+        </div>
+    </div>
+
+    <div id="ui-legend">
+        <div class="legend-item" id="leg-frontal">
+            <div class="color-box" style="background: #5ce1e6; box-shadow: 0 0 8px #5ce1e6;"></div> Frontal Lobe
+            (Logic/AI)
+        </div>
+        <div class="legend-item" id="leg-occipital">
+            <div class="color-box" style="background: #d946ef; box-shadow: 0 0 8px #d946ef;"></div> Occipital Lobe
+            (Visuals)
+        </div>
+        <div class="legend-item" id="leg-temporal">
+            <div class="color-box" style="background: #ff9e00; box-shadow: 0 0 8px #ff9e00;"></div> Temporal Lobe
+            (Language)
+        </div>
+        <div class="legend-item" id="leg-cerebellum">
+            <div class="color-box" style="background: #00ff80; box-shadow: 0 0 8px #00ff80;"></div> Cerebellum (Core/DB)
+        </div>
+    </div>
+
+
+
+    <div id="note-workspace">
+        <div class="ethereal-reader">
+            <div class="breadcrumb" onclick="closeWorkspace(event)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Return to Network
+            </div>
+            <h1 id="ws-title">Title</h1>
+            <div class="note-meta">
+                <span id="ws-date"></span>
+                <span id="ws-tags" class="meta-tags"></span>
+                <span id="ws-time"></span>
+            </div>
+            <div id="ws-content" class="markdown-body"></div>
+        </div>
+    </div>
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- INJECT_JS -->
+</body>
+
+</html>
