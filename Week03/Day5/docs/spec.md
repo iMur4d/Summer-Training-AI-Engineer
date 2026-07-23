@@ -25,14 +25,23 @@ Build a web application helps car owners organize all maintenance invoices in on
 - `docs/` - Documentation
 
 ## Project Scope
-### In Scope 
- - Building a MVP to prove the idea concept
- - Integrate LLM to evaluate the car state
- - Using OpenCV to scan invoices and traditional OCR
 
-### Out of scope (Features Improvements)
-- Using VLM to extract information automatically and retrieve stucture data
-- Classify maintenance types and estimate future maintenance costs
+### In Scope
+
+- Build an MVP to validate the project idea.
+- Register and manage multiple vehicles.
+- Store maintenance invoices and service history.
+- Upload invoice images or PDF files.
+- Calculate the total maintenance cost for each vehicle.
+- Display maintenance history in chronological order.
+
+### Out of Scope (Future Improvements)
+
+- OCR-based invoice scanning.
+- LLM-based vehicle condition evaluation.
+- Automatic information extraction using VLM.
+- Maintenance type classification.
+- Future maintenance cost prediction.
 
 
 ---
@@ -55,7 +64,8 @@ Build a web application helps car owners organize all maintenance invoices in on
 - Total cost
 - Performed services
 - Replaced parts
-- Upload it as PDF or image
+- Upload the invoice as a PDF or image.
+- Uploaded files are stored locally, while the database stores only the file path.
 
 ---
 
@@ -82,7 +92,9 @@ Build a web application helps car owners organize all maintenance invoices in on
 ---
 
 ## Constraints 
-- Before using LLM with private schema data , must be clean it before you call it.
 
+- The MVP is designed as a single-user application.
+- User authentication is out of scope for this version.
+- Before using LLM with private schema data , must be clean it before you call it.
 - After you finished the task write your changes into `/CHANGELOG.md`
 
