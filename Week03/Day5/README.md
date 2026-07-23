@@ -38,10 +38,14 @@ C:.
 │   README.md
 │
 ├───docs/      # Project documentation
-│       context.md        # Context provided to AI agents
-│       project_idea.md   # Original project concept
-│       spec.md           # Detailed implementation specification
-|       system_prompt.md  # AI assistant instructions
+|   |
+│   ├───validation/
+│   │   └── iteration_01.md
+│   │
+│   ├───context.md        # Context provided to AI agents
+│   ├───project_idea.md   # Original project concept
+│   ├───spec.md           # Detailed implementation specification
+│   └───system_prompt.md  # AI assistant instructions
 │
 ├───src/
 │   ├───backend/    # Python & SQLite code
