@@ -16,6 +16,13 @@ Build a web application helps car owners organize all maintenance invoices in on
 | SQLite | Database  |
 | React  | Interface |
 
+### Framework Selection
+
+The implementation framework is intentionally left unspecified.
+
+The development team may select the most appropriate Python backend framework
+and React tooling during implementation based on project needs.
+
 ---
 
 ## Project Structure
@@ -95,6 +102,8 @@ Build a web application helps car owners organize all maintenance invoices in on
 
 - The MVP is designed as a single-user application.
 - User authentication is out of scope for this version.
-- Before using LLM with private schema data , must be clean it before you call it.
+- If the implementation communicates with an external LLM service, any sensitive
+application data (such as VINs or other private information) must be sanitized
+before being sent outside the system.
 - After you finished the task write your changes into `/CHANGELOG.md`
 

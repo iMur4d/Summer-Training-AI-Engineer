@@ -19,7 +19,7 @@ Only the project description has been defined.
 No architecture, database schema, or implementation has been created yet.
 
 ## Current Task
-Create the initial project architecture.
+Prepare the project for implementation based on the provided specification.
 
 ## Success Criteria
 The solution is considered complete if:
@@ -61,6 +61,10 @@ The solution is considered complete if:
 ---
 
 #### Future Improvements
- - Using OCR and AI to extract information automatically
- - Classify maintenance types and estimate future maintenance costs
+
+- OCR-based invoice scanning.
+- LLM-based vehicle condition evaluation.
+- Automatic information extraction using VLM.
+- Maintenance type classification.
+- Future maintenance cost prediction.
 
