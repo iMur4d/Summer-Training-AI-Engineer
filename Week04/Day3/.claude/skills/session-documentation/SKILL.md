@@ -57,14 +57,14 @@ List every file modified since the last update.
    to match its exact format and tone: <summary>, one <part_N> block per
    distinct piece of work, <open_items>, <files_touched_this_session>.
 
-### Step 3: Determine today's date. Check whether
-   CollaInsight/docs/ai-agent-code-work/claude/<today>-session-log.md already
-   exists (this skill may be invoked more than once in the same session/day).
+### Step 3: Determine today's date in `YYYY-MM-DD` format. Check whether
+   `CollaInsight/docs/ai-agent-code-work/claude/YYYY-MM-DD-session-log.md`
+   (with today's actual date) already exists (this skill may be invoked more
+   than once in the same session/day).
    - If it exists, extend it: add new <part_N> blocks for new work, update
      <summary> and <open_items> to reflect the current end state. Do not
      duplicate a second same-day file.
    - If it doesn't exist, create it.
-   - Determine today's date using the `YYYY-MM-DD` format. Check whether: CollaInsight/docs/ai-agent-code work/claude/YYYY-MM-DD-session-log.md already exists.
 
 ## Writing Guidelines
 Follow these steps whenever this skill is invoked:
