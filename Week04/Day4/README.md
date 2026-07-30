@@ -24,7 +24,7 @@ Rather than testing the skill with a small artificial example, I validated it as
 
 ## Why this skill?
 
-While developing CollaInsight project (this is the new project inspired by the second week's project), I found that new AI coding sessions typically begin without access to previous conversation history. As a result, I repeatedly had to explain previous work and manually request development summaries in the project's preferred format.
+While developing the CollaInsight project (this is the new project inspired by the second week's project), I found that new AI coding sessions typically begin without access to previous conversation history. As a result, I repeatedly had to explain previous work and manually request development summaries in the project's preferred format.
 
 To solve this problem, I created the `session-documentation` skill. It automatically generates structured session handover logs that preserve:
 
@@ -35,4 +35,8 @@ To solve this problem, I created the `session-documentation` skill. It automatic
 
 These logs become part of the repository itself, allowing future development sessions (or even different AI agents) to resume work from documented project history rather than relying on previous chat conversations.
 
-This provides a lightweight mechanism between independent AI sessions, making long-running software projects easier to maintain and continue over time.
+This provides a lightweight continuity mechanism across independent AI sessions, making long-running software projects easier to maintain and continue over time.
+
+## Evidence notes
+
+> The generated session logs are included under `docs/ai-agent-code-work/claude/` as evidence that the custom skill was successfully integrated into a real development workflow. They demonstrate the skill operating consistently across multiple development sessions.
