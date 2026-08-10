@@ -1,0 +1,338 @@
+{
+  "name": "Day 3 - AI Chaining",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        48
+      ],
+      "id": "b3b6847c-d74a-4c8f-8333-11cb70f5e45f",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fc1f7d63-4c8d-487d-9e5e-58eaa5ab3ef2",
+              "name": "repo_name",
+              "value": "={{ $json.items[0].full_name }}",
+              "type": "string"
+            },
+            {
+              "id": "42e0fa3f-686b-4209-9aa5-f157d3596ad5",
+              "name": "repo_url",
+              "value": "={{ $json.items[0].html_url }}",
+              "type": "string"
+            },
+            {
+              "id": "f588a7ac-6fbc-4bda-b5b3-eb9816a16f9a",
+              "name": "stars",
+              "value": "={{ $json.items[0].stargazers_count }}",
+              "type": "number"
+            },
+            {
+              "id": "55b5539c-63cc-40e1-8319-5f61b0aa84cf",
+              "name": "description",
+              "value": "={{ $json.items[0].description }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        256,
+        48
+      ],
+      "id": "bce7ec07-b619-4fad-af63-49bbc66e89e7",
+      "name": "Extract Repo Info"
+    },
+    {
+      "parameters": {
+        "url": "https://api.microlink.io",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.repo_url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        464,
+        48
+      ],
+      "id": "46fb801c-9248-45ab-8bf8-011d02541ce2",
+      "name": "Enrich Repo Link"
+    },
+    {
+      "parameters": {
+        "url": "https://api.github.com/search/repositories",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "topic:artificial-intelligence"
+            },
+            {
+              "name": "sort",
+              "value": "stars"
+            },
+            {
+              "name": "order",
+              "value": "desc"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        48,
+        48
+      ],
+      "id": "4f00dbdc-b2e2-463f-8acc-8b32f1dec806",
+      "name": "Search AI Repos"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "336d5a4e-2f03-48ce-985c-84dd244fb58e",
+              "name": "repo_name",
+              "value": "={{ $('Extract Repo Info').item.json.repo_name }}",
+              "type": "string"
+            },
+            {
+              "id": "213f9626-4f7e-42d9-90e5-e8e73e2764ce",
+              "name": "repo_url",
+              "value": "={{ $('Extract Repo Info').item.json.repo_url }}",
+              "type": "string"
+            },
+            {
+              "id": "45a88e38-445a-4e2c-994a-6fd99b73fb9f",
+              "name": "stars",
+              "value": "={{ $('Extract Repo Info').item.json.stars }}",
+              "type": "number"
+            },
+            {
+              "id": "0b7d1f25-4d70-4598-992b-b327784b70c5",
+              "name": "enriched_title",
+              "value": "={{ $json.data.title }}",
+              "type": "string"
+            },
+            {
+              "id": "f920d1a4-cc06-4bbc-8f02-df5756b1eacf",
+              "name": "enriched_description",
+              "value": "={{ $json.data.description }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        672,
+        48
+      ],
+      "id": "0d7a6f2a-7eb2-44eb-a549-08fae0d7917c",
+      "name": "Combine Results"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Extract the 3 most important facts about this project from the following data:  Repository: {{ $json.repo_name }} Stars: {{ $json.stars }} Description: {{ $json.enriched_description }}",
+        "messages": {
+          "messageValues": []
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        880,
+        48
+      ],
+      "id": "555c4775-5c94-4bc2-a15e-3330c19529d5",
+      "name": "Extract Key Points"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemma-4-26b-a4b-it",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        208
+      ],
+      "id": "059f2ae7-5b6f-40f8-be19-1836a49defb8",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "qR2VlPng3vVhu6dU",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Using only these key points, write a single polished 2-sentence summary suitable for a tech news digest:\n\n{{ $json.text }}",
+        "messages": {
+          "messageValues": []
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1232,
+        48
+      ],
+      "id": "4e568a25-d796-495d-978e-ae4f83da375a",
+      "name": "Write Final Summary"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemma-4-26b-a4b-it",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        1232,
+        208
+      ],
+      "id": "6747b60f-00b4-45df-ad61-2d208f1b7f08",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "qR2VlPng3vVhu6dU",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Search AI Repos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Repo Info": {
+      "main": [
+        [
+          {
+            "node": "Enrich Repo Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enrich Repo Link": {
+      "main": [
+        [
+          {
+            "node": "Combine Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search AI Repos": {
+      "main": [
+        [
+          {
+            "node": "Extract Repo Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Results": {
+      "main": [
+        [
+          {
+            "node": "Extract Key Points",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Extract Key Points",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Key Points": {
+      "main": [
+        [
+          {
+            "node": "Write Final Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Write Final Summary",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d3ab96f5-7641-4f2f-a615-1f32a5bbfde1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4f70e1de2d501f6c63ac858429328d5a742d65a5c9b497243376d197c3e4567"
+  },
+  "nodeGroups": [],
+  "id": "li68ZuXmhzW2fRpA",
+  "tags": []
+}
