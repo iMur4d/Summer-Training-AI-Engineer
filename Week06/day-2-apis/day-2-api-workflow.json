@@ -1,0 +1,217 @@
+{
+  "name": "day-2-api-workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2e9a8d6c-c2e1-4f0b-bab6-ef26100aa493",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fc1f7d63-4c8d-487d-9e5e-58eaa5ab3ef2",
+              "name": "repo_name",
+              "value": "={{ $json.items[0].full_name }}",
+              "type": "string"
+            },
+            {
+              "id": "42e0fa3f-686b-4209-9aa5-f157d3596ad5",
+              "name": "repo_url",
+              "value": "={{ $json.items[0].html_url }}",
+              "type": "string"
+            },
+            {
+              "id": "f588a7ac-6fbc-4bda-b5b3-eb9816a16f9a",
+              "name": "stars",
+              "value": "={{ $json.items[0].stargazers_count }}",
+              "type": "number"
+            },
+            {
+              "id": "55b5539c-63cc-40e1-8319-5f61b0aa84cf",
+              "name": "description",
+              "value": "={{ $json.items[0].description }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        416,
+        0
+      ],
+      "id": "55303cb1-b9a7-4fe3-bc1f-f919233078b1",
+      "name": "Extract Repo Info"
+    },
+    {
+      "parameters": {
+        "url": "https://api.microlink.io",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.repo_url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        624,
+        0
+      ],
+      "id": "4dca396b-cda4-4bb2-9e4c-4c831b17a3aa",
+      "name": "Enrich Repo Link"
+    },
+    {
+      "parameters": {
+        "url": "https://api.github.com/search/repositories",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "topic:artificial-intelligence"
+            },
+            {
+              "name": "sort",
+              "value": "stars"
+            },
+            {
+              "name": "order",
+              "value": "desc"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "2cc4221d-1145-4c76-8dd9-b872580127b3",
+      "name": "Search AI Repos"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "336d5a4e-2f03-48ce-985c-84dd244fb58e",
+              "name": "repo_name",
+              "value": "={{ $('Extract Repo Info').item.json.repo_name }}",
+              "type": "string"
+            },
+            {
+              "id": "213f9626-4f7e-42d9-90e5-e8e73e2764ce",
+              "name": "repo_url",
+              "value": "={{ $('Extract Repo Info').item.json.repo_url }}",
+              "type": "string"
+            },
+            {
+              "id": "45a88e38-445a-4e2c-994a-6fd99b73fb9f",
+              "name": "stars",
+              "value": "={{ $('Extract Repo Info').item.json.stars }}",
+              "type": "number"
+            },
+            {
+              "id": "0b7d1f25-4d70-4598-992b-b327784b70c5",
+              "name": "enriched_title",
+              "value": "={{ $json.data.title }}",
+              "type": "string"
+            },
+            {
+              "id": "f920d1a4-cc06-4bbc-8f02-df5756b1eacf",
+              "name": "enriched_description",
+              "value": "={{ $json.data.description }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        832,
+        0
+      ],
+      "id": "f33159fe-d334-4a83-bcc1-1187f9e7994f",
+      "name": "Combine Results"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Search AI Repos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Repo Info": {
+      "main": [
+        [
+          {
+            "node": "Enrich Repo Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enrich Repo Link": {
+      "main": [
+        [
+          {
+            "node": "Combine Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search AI Repos": {
+      "main": [
+        [
+          {
+            "node": "Extract Repo Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "9f0c3789-5687-4e9d-84e1-d0223687459a",
+  "meta": {
+    "instanceId": "d4f70e1de2d501f6c63ac858429328d5a742d65a5c9b497243376d197c3e4567"
+  },
+  "nodeGroups": [],
+  "id": "XuvfuYfhs78vM9uk",
+  "tags": []
+}
