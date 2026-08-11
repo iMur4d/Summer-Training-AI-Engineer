@@ -1,0 +1,209 @@
+{
+  "name": "Day 5 - End to End",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Submit a document for summarization",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Document",
+              "fieldType": "file"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9fd1c9f8-c315-45e1-8913-4da98becde83",
+      "name": "On form submission",
+      "webhookId": "8e87f520-94c5-49b6-b17d-779a0082cc8c"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "binaryPropertyName": "=Document",
+        "destinationKey": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "8bc6ac78-bd9e-4204-a821-2cf5008ccdab",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Summarize the following document in 3-4 sentences, highlighting the key points:\\n\\n{{ $json.text }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        368,
+        0
+      ],
+      "id": "ded8fb93-e1e0-4c58-91cc-0c6e3e6df9aa",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        304,
+        208
+      ],
+      "id": "011f9e2b-563c-44ab-8410-dc0f8595b6e6",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "qR2VlPng3vVhu6dU",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "document_summaries",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "filename",
+              "fieldValue": "={{ $('On form submission').item.json.Document[0].filename }}"
+            },
+            {
+              "fieldId": "summary",
+              "fieldValue": "={{ $json.text }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        720,
+        0
+      ],
+      "id": "106b2d83-4b58-4c98-80b3-93430c12688b",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "fYsx5Ty4q3aTKnZU",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "=yourchatid",
+        "text": "=New document summarized: {{ $json.filename }}\\n\\nSummary: {{ $json.summary }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        912,
+        0
+      ],
+      "id": "b033ca44-5e53-44b1-86c5-2426384e561d",
+      "name": "Send a text message",
+      "webhookId": "3d7dde99-6833-41ca-8273-6b880f4e2ec8",
+      "credentials": {
+        "telegramApi": {
+          "id": "j5KBLrychiJiowtr",
+          "name": "Day5 Document Summarizer Bot"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "68369df2-c2c4-41e9-88ae-47194937ecab",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4f70e1de2d501f6c63ac858429328d5a742d65a5c9b497243376d197c3e4567"
+  },
+  "nodeGroups": [],
+  "id": "TWIIehbT3km8ajEb",
+  "tags": []
+}
