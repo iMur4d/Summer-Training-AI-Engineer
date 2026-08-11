@@ -1,0 +1,404 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        -48
+      ],
+      "id": "16d0315d-308e-4a15-a426-a050740edb76",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fc1f7d63-4c8d-487d-9e5e-58eaa5ab3ef2",
+              "name": "repo_name",
+              "value": "={{ $json.items[0].full_name }}",
+              "type": "string"
+            },
+            {
+              "id": "42e0fa3f-686b-4209-9aa5-f157d3596ad5",
+              "name": "repo_url",
+              "value": "={{ $json.items[0].html_url }}",
+              "type": "string"
+            },
+            {
+              "id": "f588a7ac-6fbc-4bda-b5b3-eb9816a16f9a",
+              "name": "stars",
+              "value": "={{ $json.items[0].stargazers_count }}",
+              "type": "number"
+            },
+            {
+              "id": "55b5539c-63cc-40e1-8319-5f61b0aa84cf",
+              "name": "description",
+              "value": "={{ $json.items[0].description }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        160,
+        -48
+      ],
+      "id": "bd8bd3fa-0632-415c-a5ec-c30e2a3ac79a",
+      "name": "Extract Repo Info"
+    },
+    {
+      "parameters": {
+        "url": "https://api.microlink.io",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.repo_url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        336,
+        -48
+      ],
+      "id": "4ac75338-479b-44be-b41c-713e61bc162c",
+      "name": "Enrich Repo Link",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.github.com/search/repositories",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "topic:artificial-intelligence"
+            },
+            {
+              "name": "sort",
+              "value": "stars"
+            },
+            {
+              "name": "order",
+              "value": "desc"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -48,
+        -48
+      ],
+      "id": "8062a755-e283-4e82-8798-6b359b8e03ea",
+      "name": "Search AI Repos"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "336d5a4e-2f03-48ce-985c-84dd244fb58e",
+              "name": "repo_name",
+              "value": "={{ $('Extract Repo Info').item.json.repo_name }}",
+              "type": "string"
+            },
+            {
+              "id": "213f9626-4f7e-42d9-90e5-e8e73e2764ce",
+              "name": "repo_url",
+              "value": "={{ $('Extract Repo Info').item.json.repo_url }}",
+              "type": "string"
+            },
+            {
+              "id": "45a88e38-445a-4e2c-994a-6fd99b73fb9f",
+              "name": "stars",
+              "value": "={{ $('Extract Repo Info').item.json.stars }}",
+              "type": "number"
+            },
+            {
+              "id": "0b7d1f25-4d70-4598-992b-b327784b70c5",
+              "name": "enriched_title",
+              "value": "={{ $json.data.title }}",
+              "type": "string"
+            },
+            {
+              "id": "f920d1a4-cc06-4bbc-8f02-df5756b1eacf",
+              "name": "enriched_description",
+              "value": "={{ $json.data.description }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        528,
+        -192
+      ],
+      "id": "dd956708-1f6a-4e2e-a34d-a30eda7868d5",
+      "name": "Combine Results"
+    },
+    {
+      "parameters": {
+        "resume": "form",
+        "formTitle": "Approve this repo for publishing?",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Decision",
+              "fieldType": "radio",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Approve"
+                  },
+                  {
+                    "option": "Reject"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        -192
+      ],
+      "id": "2675c9f8-eeeb-4f8d-8ad3-32cc12d9f38c",
+      "name": "Wait",
+      "webhookId": "308a8514-c9b0-498f-9287-26dd3a790b60"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "35a96053-b919-45d1-82a4-ed3b44f3e137",
+              "leftValue": "={{ $json.Decision }}",
+              "rightValue": "Approve",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        944,
+        -192
+      ],
+      "id": "dbe13355-a230-4094-bf39-9c53b9b984ad",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "34e10bdb-1e92-4914-8830-d78f081ca86e",
+              "name": "status",
+              "value": "approved",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1168,
+        -288
+      ],
+      "id": "173104fd-4e67-4478-a1e5-fd1d1024c762",
+      "name": "Approve"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "34e10bdb-1e92-4914-8830-d78f081ca86e",
+              "name": "status",
+              "value": "rejected",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1168,
+        -80
+      ],
+      "id": "3657eb51-b4f8-470e-937b-53486dfb1912",
+      "name": "Rejected"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "71b568e6-945c-497b-8f1d-04a79ff77375",
+              "name": "status",
+              "value": "=error",
+              "type": "string"
+            },
+            {
+              "id": "98cf0c8e-b86c-4e84-8a5b-8ae683e46ee7",
+              "name": "error.code",
+              "value": "={{ $json.error.code }}",
+              "type": "string"
+            },
+            {
+              "id": "93351664-1d07-40e8-9cb0-de92220c2764",
+              "name": "error.hostname",
+              "value": "={{ $json.error.hostname }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        528,
+        48
+      ],
+      "id": "73c87925-cf4b-4c67-a2f0-e1615aa8e7c3",
+      "name": "Handle Error"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Search AI Repos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Repo Info": {
+      "main": [
+        [
+          {
+            "node": "Enrich Repo Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enrich Repo Link": {
+      "main": [
+        [
+          {
+            "node": "Combine Results",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Handle Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search AI Repos": {
+      "main": [
+        [
+          {
+            "node": "Extract Repo Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Results": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Approve",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rejected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "d4f70e1de2d501f6c63ac858429328d5a742d65a5c9b497243376d197c3e4567"
+  }
+}
